@@ -2,7 +2,7 @@
 """Assemble l'application en un seul fichier HTML autonome (données incluses).
 
 Usage :
-    python3 scripts/build_app.py                      # écrit docs/index.html (page complète, pour GitHub Pages)
+    python3 scripts/build_app.py                      # écrit index.html (page complète, pour GitHub Pages)
     python3 scripts/build_app.py --fragment FICHIER   # écrit le fragment sans <html>/<head>/<body>
 """
 import argparse
@@ -53,7 +53,7 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(fragment, encoding="utf-8")
     else:
-        out = ROOT / "docs" / "index.html"
+        out = ROOT / "index.html"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(WRAP.replace("{body}", fragment), encoding="utf-8")
     print(f"Écrit : {out} ({out.stat().st_size // 1024} Ko)")

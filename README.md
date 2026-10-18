@@ -15,8 +15,8 @@ data/vocab.json    58 mots : hanzi_trad, hanzi_simp, pinyin, fr, tags, sources
 data/cards.json    5 cartes culturelles + albums (monuments, animaux, boissons, fêtes)
 data/voices.json   4 voix (mandarin standard zh-CN et mandarin de Taïwan zh-TW) et 2 vitesses
 app/index.template.html    source de l'appli (HTML, CSS et JS)
-scripts/build_app.py       assemble l'appli et ses données dans docs/index.html
-docs/index.html            appli prête à servir (GitHub Pages : branche main, dossier /docs)
+scripts/build_app.py       assemble l'appli et ses données dans index.html
+index.html                 appli prête à servir (GitHub Pages : branche main, racine /)
 scripts/validate_data.py   vérifie la cohérence des données
 scripts/gen_audio.py       génère les audios mp3 pour chaque voix et vitesse
 ```
@@ -31,7 +31,7 @@ scripts/gen_audio.py       génère les audios mp3 pour chaque voix et vitesse
 
 ```bash
 python3 scripts/validate_data.py            # vérifier les données
-python3 scripts/build_app.py                # régénérer docs/index.html après un changement de données
+python3 scripts/build_app.py                # régénérer index.html après un changement de données
 
 pip install -r requirements.txt
 python3 scripts/gen_audio.py --dry-run      # voir ce qui sera généré
