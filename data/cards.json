@@ -1,0 +1,85 @@
+{
+  "_meta": {
+    "description": "Cartes culturelles à collectionner. Une carte se débloque quand tous les mots de 'words_required' sont maîtrisés.",
+    "rarities": ["commune", "rare", "légendaire"],
+    "image_note": "Les images viennent de Wikimedia Commons (licences libres). 'image' et 'image_credit' sont à remplir avec le fichier choisi, son auteur et sa licence."
+  },
+  "albums": [
+    {"id": "monuments", "name_fr": "Monuments"},
+    {"id": "animaux", "name_fr": "Animaux"},
+    {"id": "nourriture", "name_fr": "Boissons et cuisine"},
+    {"id": "fetes", "name_fr": "Fêtes"}
+  ],
+  "cards": [
+    {
+      "id": "c001",
+      "name_hanzi_trad": "長城",
+      "pinyin": "Chángchéng",
+      "name_fr": "La Grande Muraille",
+      "album": "monuments",
+      "rarity": "légendaire",
+      "text_fr": "Réseau de fortifications long de milliers de kilomètres, construit et reconstruit par plusieurs dynasties. Les tronçons les plus visités datent surtout de la dynastie Ming.",
+      "phrase": {"hanzi_trad": "長城在中國。", "pinyin": "Chángchéng zài Zhōngguó.", "fr": "La Grande Muraille est en Chine."},
+      "words_required": ["w056", "w049", "w037"],
+      "image": null,
+      "image_credit": null,
+      "image_hint": "Great Wall of China, Badaling (Wikimedia Commons)"
+    },
+    {
+      "id": "c002",
+      "name_hanzi_trad": "紫禁城",
+      "pinyin": "Zǐjìnchéng",
+      "name_fr": "La Cité interdite",
+      "album": "monuments",
+      "rarity": "rare",
+      "text_fr": "Ancien palais impérial des dynasties Ming et Qing, au cœur de Pékin. Il abrite aujourd'hui le musée du Palais.",
+      "phrase": {"hanzi_trad": "紫禁城在北京。", "pinyin": "Zǐjìnchéng zài Běijīng.", "fr": "La Cité interdite est à Pékin."},
+      "words_required": ["w057", "w049", "w039"],
+      "image": null,
+      "image_credit": null,
+      "image_hint": "Forbidden City, Beijing (Wikimedia Commons)"
+    },
+    {
+      "id": "c003",
+      "name_hanzi_trad": "熊貓",
+      "pinyin": "xióngmāo",
+      "name_fr": "Le panda géant",
+      "album": "animaux",
+      "rarity": "commune",
+      "text_fr": "Le panda géant vit à l'état sauvage dans les montagnes du centre de la Chine, notamment au Sichuan.",
+      "phrase": {"hanzi_trad": "我愛熊貓。", "pinyin": "Wǒ ài xióngmāo.", "fr": "J'aime les pandas."},
+      "words_required": ["w034", "w054", "w002"],
+      "image": null,
+      "image_credit": null,
+      "image_hint": "Giant panda (Wikimedia Commons)"
+    },
+    {
+      "id": "c004",
+      "name_hanzi_trad": "茶",
+      "pinyin": "chá",
+      "name_fr": "Le thé",
+      "album": "nourriture",
+      "rarity": "commune",
+      "text_fr": "La Chine est l'un des berceaux historiques du thé, bu au quotidien comme lors des occasions importantes.",
+      "phrase": {"hanzi_trad": "我喝茶。", "pinyin": "Wǒ hē chá.", "fr": "Je bois du thé."},
+      "words_required": ["w030", "w033", "w002"],
+      "image": null,
+      "image_credit": null,
+      "image_hint": "Chinese tea ceremony, gaiwan (Wikimedia Commons)"
+    },
+    {
+      "id": "c005",
+      "name_hanzi_trad": "春節",
+      "pinyin": "Chūnjié",
+      "name_fr": "La Fête du printemps",
+      "album": "fetes",
+      "rarity": "rare",
+      "text_fr": "Le Nouvel An lunaire, la plus grande fête de l'année : retrouvailles en famille, repas, lanternes et enveloppes rouges.",
+      "phrase": {"hanzi_trad": "春節快樂！", "pinyin": "Chūnjié kuàilè!", "fr": "Joyeuse fête du printemps !"},
+      "words_required": ["w058", "w055"],
+      "image": null,
+      "image_credit": null,
+      "image_hint": "Chinese New Year lanterns (Wikimedia Commons)"
+    }
+  ]
+}

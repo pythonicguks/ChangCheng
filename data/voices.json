@@ -1,0 +1,12 @@
+{
+  "speeds": {
+    "slow": "-35%",
+    "normal": "+0%"
+  },
+  "voices": [
+    {"id": "zh-CN-XiaoxiaoNeural", "label_fr": "Mandarin standard, voix féminine", "locale": "zh-CN", "gender": "F"},
+    {"id": "zh-CN-YunxiNeural", "label_fr": "Mandarin standard, voix masculine", "locale": "zh-CN", "gender": "M"},
+    {"id": "zh-TW-HsiaoChenNeural", "label_fr": "Mandarin de Taïwan, voix féminine", "locale": "zh-TW", "gender": "F"},
+    {"id": "zh-TW-YunJheNeural", "label_fr": "Mandarin de Taïwan, voix masculine", "locale": "zh-TW", "gender": "M"}
+  ]
+}
