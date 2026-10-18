@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; font: 14px system-ui, sans-serif; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<title>ChangCheng</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;700&display=swap">
+<style>
+/* Concept : une page d'étude en pierre grise et céladon, les caractères posés comme des sceaux, une barre d'onglets en bas pour jouer, collectionner, régler. */
+:root {
+  --bg: #F1F3EE;
+  --surface: #FAFBF8;
+  --surface-2: #E6EAE3;
+  --fg: #1C2623;
+  --muted: #56645E;
+  --line: #CFD6CD;
+  --accent: #1D6B64;
+  --accent-fg: #FFFFFF;
+  --accent-soft: #D3E8E3;
+  --good: #2B7A4B;
+  --good-soft: #DAEEDF;
+  --bad: #AE362E;
+  --bad-soft: #F4DCD9;
+  --gold: #8F640C;
+  --gold-soft: #F2E4C2;
+  --ui: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --han: "Noto Serif TC", "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1514; --surface: #172120; --surface-2: #202C2A; --fg: #E6ECE9; --muted: #98A7A1; --line: #2C3B38;
+    --accent: #6CC3B7; --accent-fg: #0B1412; --accent-soft: #1C3733;
+    --good: #72CD91; --good-soft: #1A3325; --bad: #F18C82; --bad-soft: #3B201D; --gold: #E4B65A; --gold-soft: #3A2F14;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1514; --surface: #172120; --surface-2: #202C2A; --fg: #E6ECE9; --muted: #98A7A1; --line: #2C3B38;
+  --accent: #6CC3B7; --accent-fg: #0B1412; --accent-soft: #1C3733;
+  --good: #72CD91; --good-soft: #1A3325; --bad: #F18C82; --bad-soft: #3B201D; --gold: #E4B65A; --gold-soft: #3A2F14;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--ui); font-size: 16px; line-height: 1.45;
+  padding-block: 8px 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 560px; margin: 0 auto; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+h2 { font-size: 1.25rem; line-height: 1.2; text-wrap: balance; }
+h3 { font-size: 1rem; }
+.muted { color: var(--muted); }
+.small { font-size: .875rem; }
+.han { font-family: var(--han); font-weight: 700; }
+.py { font-weight: 500; letter-spacing: .01em; }
+
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 14px 0 6px; }
+.brand { font-size: 1.05rem; font-weight: 700; letter-spacing: .02em; }
+.brand .han { color: var(--accent); margin-right: 8px; font-size: 1.25rem; }
+.stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.bar { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.stat { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.stat b { font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+
+.btn { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 16px; min-height: 48px; font-weight: 600; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-size: 1.05rem; }
+.btn.ghost { background: transparent; }
+.btn.danger { border-color: var(--bad); color: var(--bad); }
+.btn.small { min-height: 40px; padding: 8px 14px; font-size: .9rem; }
+.btn:active { transform: translateY(1px); }
+.say { width: 44px; height: 44px; min-height: 44px; padding: 0; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--accent); color: var(--accent); background: transparent; flex: none; }
+.say svg { width: 22px; height: 22px; fill: currentColor; }
+.say.big { width: 72px; height: 72px; }
+.say.big svg { width: 34px; height: 34px; }
+
+.dots { display: flex; gap: 6px; flex-wrap: wrap; }
+.dots i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--muted); display: block; }
+.dots i.on { background: var(--accent); border-color: var(--accent); }
+
+.seal { display: inline-block; font-family: var(--han); font-weight: 700; line-height: 1; border: 2px solid currentColor; border-radius: 8px; padding: .26em .3em; color: var(--accent); max-width: 100%; }
+.seal.r-legendaire { color: var(--gold); }
+.seal.r-commune { color: var(--muted); }
+
+.badge { display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid currentColor; color: var(--muted); }
+.badge.r-rare { color: var(--accent); }
+.badge.r-legendaire { color: var(--gold); }
+.badge.st-ok { color: var(--good); }
+.badge.st-go { color: var(--accent); }
+
+/* Quiz */
+.qhead { display: flex; align-items: center; gap: 12px; padding-top: 6px; }
+.qhead .bar { flex: 1; }
+.qcount { font-variant-numeric: tabular-nums; font-size: .875rem; color: var(--muted); }
+.qprompt { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 8px 8px; }
+.qlabel { font-size: .875rem; color: var(--muted); font-weight: 500; }
+.prompt-han { font-family: var(--han); font-weight: 700; font-size: clamp(52px, 17vw, 84px); line-height: 1.1; overflow-wrap: anywhere; }
+.prompt-py { font-size: clamp(30px, 9vw, 44px); font-weight: 600; line-height: 1.15; }
+.prompt-fr { font-size: 1.6rem; font-weight: 600; line-height: 1.2; text-wrap: balance; }
+.hint { color: var(--muted); font-size: 1.1rem; }
+.opts { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.opts.one { grid-template-columns: minmax(0, 1fr); }
+.opt { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; min-height: 64px; padding: 10px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; min-width: 0; overflow-wrap: anywhere; }
+.opt .han { font-size: 1.9rem; line-height: 1.15; }
+.opt .py { font-size: 1.3rem; }
+.opt .fr { font-size: 1.05rem; font-weight: 500; }
+.opt .hint { font-size: .85rem; }
+.opt.right { border-color: var(--good); background: var(--good-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt:disabled { cursor: default; }
+.opt:disabled:not(.right):not(.wrong) { opacity: .55; }
+.fb { border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; border: 1.5px solid var(--good); background: var(--good-soft); }
+.fb.bad { border-color: var(--bad); background: var(--bad-soft); }
+.fb-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.fb-word { display: flex; flex-direction: column; min-width: 0; }
+.fb-word .han { font-size: 1.9rem; line-height: 1.15; }
+.fb-title { font-weight: 700; }
+
+/* Collection */
+.tiles { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tile { text-align: left; background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; min-height: 168px; }
+.tile.r-rare { border-color: var(--accent); }
+.tile.r-legendaire { border-color: var(--gold); background: var(--gold-soft); }
+.tile.locked { border-style: dashed; background: transparent; border-color: var(--line); }
+.tile .seal { font-size: 2rem; }
+.tile .q { font-family: var(--han); font-size: 2.4rem; font-weight: 700; color: var(--muted); line-height: 1.1; }
+.tile .name { font-weight: 600; line-height: 1.25; }
+.tile .grow { flex: 1; }
+
+/* Feuille de détail */
+.sheet { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-end; justify-content: center; background: rgba(8, 14, 13, .55); }
+.sheet-panel { background: var(--bg); width: 100%; max-width: 560px; max-height: 90%; overflow-y: auto; border-radius: 18px 18px 0 0; padding: 18px max(16px, env(safe-area-inset-left, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 14px; }
+.sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: baseline; gap: 6px; border: 1.5px solid var(--line); border-radius: 10px; padding: 6px 10px; background: var(--surface); }
+.chip .han { font-size: 1.1rem; }
+.chip.ok { border-color: var(--good); background: var(--good-soft); }
+.phrase { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; display: flex; flex-direction: column; gap: 2px; }
+.phrase .han { font-size: 1.5rem; line-height: 1.3; }
+
+/* Lexique */
+details.panel summary { cursor: pointer; font-weight: 600; min-height: 32px; display: flex; align-items: center; }
+.lex { display: flex; flex-direction: column; }
+.lex-row { display: grid; grid-template-columns: minmax(64px, auto) minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; text-align: left; background: transparent; border: 0; border-top: 1px solid var(--line); padding: 10px 0; width: 100%; }
+.lex-row .han { font-size: 1.4rem; }
+.lex-row .meta { display: flex; flex-direction: column; min-width: 0; }
+
+/* Réglages */
+.field { display: flex; flex-direction: column; gap: 8px; }
+.seg { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.seg button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; padding: 10px 8px; min-height: 44px; font-weight: 500; }
+.seg button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+.check { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+.check input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
+.note { border-radius: 10px; padding: 10px 12px; background: var(--gold-soft); font-size: .9rem; }
+
+/* Fin de session */
+.score { font-size: 3rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.stamp { animation: stamp .45s ease-out both; }
+@keyframes stamp { from { transform: scale(1.35) rotate(-4deg); } to { transform: none; } }
+
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
+.tabs button { background: transparent; border: 0; border-radius: 10px; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--muted); font-size: .8rem; font-weight: 600; }
+.tabs button .han { font-size: 1.3rem; line-height: 1; }
+.tabs button[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
+
+@media (prefers-reduced-motion: reduce) { .stamp { animation: none; } .btn:active { transform: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="han">長城</span>ChangCheng</div>
+    <div class="small muted" id="topnote">Mandarin A1</div>
+  </header>
+  <main id="view" class="stack" aria-live="polite"></main>
+</div>
+
+<nav class="tabs" aria-label="Navigation">
+  <button type="button" data-tab="jouer"><span class="han" aria-hidden="true">學</span>Jouer</button>
+  <button type="button" data-tab="collection"><span class="han" aria-hidden="true">集</span>Collection</button>
+  <button type="button" data-tab="reglages"><span class="han" aria-hidden="true">設</span>Réglages</button>
+</nav>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="Détail de la carte" id="sheetpanel"></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var VOCAB = [{"id": "w001", "hanzi_trad": "你", "hanzi_simp": "你", "pinyin": "nǐ", "fr": "tu, toi", "tags": ["pronoms"], "sources": ["HSK1"]}, {"id": "w002", "hanzi_trad": "我", "hanzi_simp": "我", "pinyin": "wǒ", "fr": "je, moi", "tags": ["pronoms"], "sources": ["HSK1"]}, {"id": "w003", "hanzi_trad": "他", "hanzi_simp": "他", "pinyin": "tā", "fr": "il, lui", "tags": ["pronoms"], "sources": ["HSK1"]}, {"id": "w004", "hanzi_trad": "她", "hanzi_simp": "她", "pinyin": "tā", "fr": "elle", "tags": ["pronoms"], "sources": ["HSK1"]}, {"id": "w005", "hanzi_trad": "好", "hanzi_simp": "好", "pinyin": "hǎo", "fr": "bien, bon", "tags": ["adjectifs"], "sources": ["HSK1"]}, {"id": "w006", "hanzi_trad": "你好", "hanzi_simp": "你好", "pinyin": "nǐ hǎo", "fr": "bonjour", "tags": ["salutations"], "sources": ["HSK1"]}, {"id": "w007", "hanzi_trad": "謝謝", "hanzi_simp": "谢谢", "pinyin": "xièxie", "fr": "merci", "tags": ["salutations"], "sources": ["HSK1"]}, {"id": "w008", "hanzi_trad": "不客氣", "hanzi_simp": "不客气", "pinyin": "bú kèqi", "fr": "de rien", "tags": ["salutations"], "sources": ["HSK1"], "note": "不 se prononce bú devant un 4e ton."}, {"id": "w009", "hanzi_trad": "對不起", "hanzi_simp": "对不起", "pinyin": "duìbuqǐ", "fr": "pardon, désolé", "tags": ["salutations"], "sources": ["HSK1"]}, {"id": "w010", "hanzi_trad": "再見", "hanzi_simp": "再见", "pinyin": "zàijiàn", "fr": "au revoir", "tags": ["salutations"], "sources": ["HSK1"]}, {"id": "w011", "hanzi_trad": "是", "hanzi_simp": "是", "pinyin": "shì", "fr": "être (c'est)", "tags": ["verbes"], "sources": ["HSK1"]}, {"id": "w012", "hanzi_trad": "不", "hanzi_simp": "不", "pinyin": "bù", "fr": "ne… pas", "tags": ["grammaire"], "sources": ["HSK1"]}, {"id": "w013", "hanzi_trad": "有", "hanzi_simp": "有", "pinyin": "yǒu", "fr": "avoir, il y a", "tags": ["verbes"], "sources": ["HSK1"]}, {"id": "w014", "hanzi_trad": "沒有", "hanzi_simp": "没有", "pinyin": "méiyǒu", "fr": "ne pas avoir, il n'y a pas", "tags": ["verbes"], "sources": ["HSK1"]}, {"id": "w015", "hanzi_trad": "人", "hanzi_simp": "人", "pinyin": "rén", "fr": "personne, gens", "tags": ["personnes"], "sources": ["HSK1"]}, {"id": "w016", "hanzi_trad": "朋友", "hanzi_simp": "朋友", "pinyin": "péngyou", "fr": "ami(e)", "tags": ["personnes"], "sources": ["HSK1"]}, {"id": "w017", "hanzi_trad": "老師", "hanzi_simp": "老师", "pinyin": "lǎoshī", "fr": "professeur", "tags": ["personnes", "école"], "sources": ["HSK1"]}, {"id": "w018", "hanzi_trad": "學生", "hanzi_simp": "学生", "pinyin": "xuésheng", "fr": "élève, étudiant", "tags": ["personnes", "école"], "sources": ["HSK1"]}, {"id": "w019", "hanzi_trad": "一", "hanzi_simp": "一", "pinyin": "yī", "fr": "un", "tags": ["nombres"], "sources": ["HSK1"], "note": "Le ton de 一 change selon le caractère suivant (yí, yì)."}, {"id": "w020", "hanzi_trad": "二", "hanzi_simp": "二", "pinyin": "èr", "fr": "deux", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w021", "hanzi_trad": "三", "hanzi_simp": "三", "pinyin": "sān", "fr": "trois", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w022", "hanzi_trad": "四", "hanzi_simp": "四", "pinyin": "sì", "fr": "quatre", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w023", "hanzi_trad": "五", "hanzi_simp": "五", "pinyin": "wǔ", "fr": "cinq", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w024", "hanzi_trad": "六", "hanzi_simp": "六", "pinyin": "liù", "fr": "six", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w025", "hanzi_trad": "七", "hanzi_simp": "七", "pinyin": "qī", "fr": "sept", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w026", "hanzi_trad": "八", "hanzi_simp": "八", "pinyin": "bā", "fr": "huit", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w027", "hanzi_trad": "九", "hanzi_simp": "九", "pinyin": "jiǔ", "fr": "neuf", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w028", "hanzi_trad": "十", "hanzi_simp": "十", "pinyin": "shí", "fr": "dix", "tags": ["nombres"], "sources": ["HSK1"]}, {"id": "w029", "hanzi_trad": "水", "hanzi_simp": "水", "pinyin": "shuǐ", "fr": "eau", "tags": ["nourriture"], "sources": ["HSK1"]}, {"id": "w030", "hanzi_trad": "茶", "hanzi_simp": "茶", "pinyin": "chá", "fr": "thé", "tags": ["nourriture", "culture"], "sources": ["HSK1"]}, {"id": "w031", "hanzi_trad": "米飯", "hanzi_simp": "米饭", "pinyin": "mǐfàn", "fr": "riz cuit", "tags": ["nourriture"], "sources": ["HSK1"]}, {"id": "w032", "hanzi_trad": "吃", "hanzi_simp": "吃", "pinyin": "chī", "fr": "manger", "tags": ["verbes", "nourriture"], "sources": ["HSK1"]}, {"id": "w033", "hanzi_trad": "喝", "hanzi_simp": "喝", "pinyin": "hē", "fr": "boire", "tags": ["verbes", "nourriture"], "sources": ["HSK1"]}, {"id": "w034", "hanzi_trad": "熊貓", "hanzi_simp": "熊猫", "pinyin": "xióngmāo", "fr": "panda", "tags": ["animaux", "culture"], "sources": []}, {"id": "w035", "hanzi_trad": "貓", "hanzi_simp": "猫", "pinyin": "māo", "fr": "chat", "tags": ["animaux"], "sources": ["HSK1"]}, {"id": "w036", "hanzi_trad": "狗", "hanzi_simp": "狗", "pinyin": "gǒu", "fr": "chien", "tags": ["animaux"], "sources": ["HSK1"]}, {"id": "w037", "hanzi_trad": "中國", "hanzi_simp": "中国", "pinyin": "Zhōngguó", "fr": "Chine", "tags": ["lieux"], "sources": ["HSK1"]}, {"id": "w038", "hanzi_trad": "台灣", "hanzi_simp": "台湾", "pinyin": "Táiwān", "fr": "Taïwan", "tags": ["lieux"], "sources": [], "note": "S'écrit aussi 臺灣 (forme plus formelle)."}, {"id": "w039", "hanzi_trad": "北京", "hanzi_simp": "北京", "pinyin": "Běijīng", "fr": "Pékin", "tags": ["lieux"], "sources": ["HSK1"]}, {"id": "w040", "hanzi_trad": "山", "hanzi_simp": "山", "pinyin": "shān", "fr": "montagne", "tags": ["nature"], "sources": []}, {"id": "w041", "hanzi_trad": "大", "hanzi_simp": "大", "pinyin": "dà", "fr": "grand", "tags": ["adjectifs"], "sources": ["HSK1"]}, {"id": "w042", "hanzi_trad": "小", "hanzi_simp": "小", "pinyin": "xiǎo", "fr": "petit", "tags": ["adjectifs"], "sources": ["HSK1"]}, {"id": "w043", "hanzi_trad": "今天", "hanzi_simp": "今天", "pinyin": "jīntiān", "fr": "aujourd'hui", "tags": ["temps"], "sources": ["HSK1"]}, {"id": "w044", "hanzi_trad": "明天", "hanzi_simp": "明天", "pinyin": "míngtiān", "fr": "demain", "tags": ["temps"], "sources": ["HSK1"]}, {"id": "w045", "hanzi_trad": "媽媽", "hanzi_simp": "妈妈", "pinyin": "māma", "fr": "maman", "tags": ["famille"], "sources": ["HSK1"]}, {"id": "w046", "hanzi_trad": "爸爸", "hanzi_simp": "爸爸", "pinyin": "bàba", "fr": "papa", "tags": ["famille"], "sources": ["HSK1"]}, {"id": "w047", "hanzi_trad": "家", "hanzi_simp": "家", "pinyin": "jiā", "fr": "maison, famille", "tags": ["famille", "lieux"], "sources": ["HSK1"]}, {"id": "w048", "hanzi_trad": "學校", "hanzi_simp": "学校", "pinyin": "xuéxiào", "fr": "école", "tags": ["école", "lieux"], "sources": ["HSK1"]}, {"id": "w049", "hanzi_trad": "在", "hanzi_simp": "在", "pinyin": "zài", "fr": "se trouver à, être à", "tags": ["verbes"], "sources": ["HSK1"]}, {"id": "w050", "hanzi_trad": "叫", "hanzi_simp": "叫", "pinyin": "jiào", "fr": "s'appeler, appeler", "tags": ["verbes"], "sources": ["HSK1"]}, {"id": "w051", "hanzi_trad": "什麼", "hanzi_simp": "什么", "pinyin": "shénme", "fr": "quoi, quel", "tags": ["questions"], "sources": ["HSK1"]}, {"id": "w052", "hanzi_trad": "名字", "hanzi_simp": "名字", "pinyin": "míngzi", "fr": "nom, prénom", "tags": ["personnes"], "sources": ["HSK1"]}, {"id": "w053", "hanzi_trad": "很", "hanzi_simp": "很", "pinyin": "hěn", "fr": "très", "tags": ["grammaire"], "sources": ["HSK1"]}, {"id": "w054", "hanzi_trad": "愛", "hanzi_simp": "爱", "pinyin": "ài", "fr": "aimer", "tags": ["verbes"], "sources": ["HSK1"]}, {"id": "w055", "hanzi_trad": "快樂", "hanzi_simp": "快乐", "pinyin": "kuàilè", "fr": "heureux, joyeux", "tags": ["adjectifs", "culture"], "sources": ["HSK2"]}, {"id": "w056", "hanzi_trad": "長城", "hanzi_simp": "长城", "pinyin": "Chángchéng", "fr": "la Grande Muraille", "tags": ["culture", "monuments"], "sources": [], "note": "長 « long » + 城 « muraille, ville »."}, {"id": "w057", "hanzi_trad": "紫禁城", "hanzi_simp": "紫禁城", "pinyin": "Zǐjìnchéng", "fr": "la Cité interdite", "tags": ["culture", "monuments"], "sources": []}, {"id": "w058", "hanzi_trad": "春節", "hanzi_simp": "春节", "pinyin": "Chūnjié", "fr": "la Fête du printemps (Nouvel An lunaire)", "tags": ["culture", "fêtes"], "sources": []}];
+  var CARDS = {"albums": [{"id": "monuments", "name_fr": "Monuments"}, {"id": "animaux", "name_fr": "Animaux"}, {"id": "nourriture", "name_fr": "Boissons et cuisine"}, {"id": "fetes", "name_fr": "Fêtes"}], "cards": [{"id": "c001", "name_hanzi_trad": "長城", "pinyin": "Chángchéng", "name_fr": "La Grande Muraille", "album": "monuments", "rarity": "légendaire", "text_fr": "Réseau de fortifications long de milliers de kilomètres, construit et reconstruit par plusieurs dynasties. Les tronçons les plus visités datent surtout de la dynastie Ming.", "phrase": {"hanzi_trad": "長城在中國。", "hanzi_simp": "长城在中国。", "pinyin": "Chángchéng zài Zhōngguó.", "fr": "La Grande Muraille est en Chine."}, "words_required": ["w056", "w049", "w037"], "image": null, "image_credit": null, "image_hint": "Great Wall of China, Badaling (Wikimedia Commons)"}, {"id": "c002", "name_hanzi_trad": "紫禁城", "pinyin": "Zǐjìnchéng", "name_fr": "La Cité interdite", "album": "monuments", "rarity": "rare", "text_fr": "Ancien palais impérial des dynasties Ming et Qing, au cœur de Pékin. Il abrite aujourd'hui le musée du Palais.", "phrase": {"hanzi_trad": "紫禁城在北京。", "hanzi_simp": "紫禁城在北京。", "pinyin": "Zǐjìnchéng zài Běijīng.", "fr": "La Cité interdite est à Pékin."}, "words_required": ["w057", "w049", "w039"], "image": null, "image_credit": null, "image_hint": "Forbidden City, Beijing (Wikimedia Commons)"}, {"id": "c003", "name_hanzi_trad": "熊貓", "pinyin": "xióngmāo", "name_fr": "Le panda géant", "album": "animaux", "rarity": "commune", "text_fr": "Le panda géant vit à l'état sauvage dans les montagnes du centre de la Chine, notamment au Sichuan.", "phrase": {"hanzi_trad": "我愛熊貓。", "hanzi_simp": "我爱熊猫。", "pinyin": "Wǒ ài xióngmāo.", "fr": "J'aime les pandas."}, "words_required": ["w034", "w054", "w002"], "image": null, "image_credit": null, "image_hint": "Giant panda (Wikimedia Commons)"}, {"id": "c004", "name_hanzi_trad": "茶", "pinyin": "chá", "name_fr": "Le thé", "album": "nourriture", "rarity": "commune", "text_fr": "La Chine est l'un des berceaux historiques du thé, bu au quotidien comme lors des occasions importantes.", "phrase": {"hanzi_trad": "我喝茶。", "hanzi_simp": "我喝茶。", "pinyin": "Wǒ hē chá.", "fr": "Je bois du thé."}, "words_required": ["w030", "w033", "w002"], "image": null, "image_credit": null, "image_hint": "Chinese tea ceremony, gaiwan (Wikimedia Commons)"}, {"id": "c005", "name_hanzi_trad": "春節", "pinyin": "Chūnjié", "name_fr": "La Fête du printemps", "album": "fetes", "rarity": "rare", "text_fr": "Le Nouvel An lunaire, la plus grande fête de l'année : retrouvailles en famille, repas, lanternes et enveloppes rouges.", "phrase": {"hanzi_trad": "春節快樂！", "hanzi_simp": "春节快乐！", "pinyin": "Chūnjié kuàilè!", "fr": "Joyeuse fête du printemps !"}, "words_required": ["w058", "w055"], "image": null, "image_credit": null, "image_hint": "Chinese New Year lanterns (Wikimedia Commons)"}]};
+
+  var DAY = 86400000;
+  var INTERVALS = [0, 0, 1, 3, 7, 16];
+  var MASTER = 3;
+  var PER_SESSION = 6;
+  var TYPES = ['h2p', 'p2h', 'h2f', 'f2h', 'a2h', 'a2p'];
+  var TYPE_LABEL = {
+    h2p: 'Choisis le pinyin', p2h: 'Choisis les caractères', h2f: 'Que veut dire ce mot ?',
+    f2h: 'Choisis les caractères', a2h: 'Écoute, puis choisis les caractères', a2p: 'Écoute, puis choisis le pinyin'
+  };
+  var TYPE_NAME = {
+    h2p: 'Caractères vers pinyin', p2h: 'Pinyin vers caractères', h2f: 'Caractères vers sens',
+    f2h: 'Sens vers caractères', a2h: 'Écoute vers caractères', a2p: 'Écoute vers pinyin'
+  };
+  var RAR = { 'commune': 'commune', 'rare': 'rare', 'légendaire': 'legendaire' };
+  var ICON_SPEAKER = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+
+  var byId = {};
+  VOCAB.forEach(function (w) { byId[w.id] = w; });
+
+  /* ---------- stockage ---------- */
+  var KEY = 'changcheng.v1';
+  var mem = null;
+  function defaults() {
+    return {
+      words: {}, unlocked: {},
+      settings: { accent: 'cn', speed: 'slow', hint: false, autoplay: true, fast: false,
+        types: { h2p: true, p2h: true, h2f: true, f2h: true, a2h: true, a2p: true } }
+    };
+  }
+  var store = defaults();
+  (function () {
+    var r = null;
+    try { var raw = localStorage.getItem(KEY); if (raw) r = JSON.parse(raw); } catch (e) { r = mem; }
+    if (r && r.words) {
+      store.words = r.words;
+      store.unlocked = r.unlocked || {};
+      Object.assign(store.settings, r.settings || {});
+      store.settings.types = Object.assign({}, defaults().settings.types, (r.settings && r.settings.types) || {});
+    }
+  })();
+  function save() {
+    mem = JSON.parse(JSON.stringify(store));
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* stockage indisponible */ }
+  }
+
+  /* ---------- utilitaires ---------- */
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function rec(id) { return store.words[id] || { box: 0, due: 0, seen: false }; }
+  function mastered(id) { return rec(id).box >= MASTER; }
+  function cardProg(c) { var d = c.words_required.filter(mastered).length; return { done: d, total: c.words_required.length }; }
+  function dots(c) {
+    return '<span class="dots" aria-hidden="true">' + c.words_required.map(function (id) { return '<i class="' + (mastered(id) ? 'on' : '') + '"></i>'; }).join('') + '</span>';
+  }
+  function checkUnlocks() {
+    var out = [];
+    CARDS.cards.forEach(function (c) {
+      if (!store.unlocked[c.id] && cardProg(c).done === c.words_required.length) { store.unlocked[c.id] = Date.now(); out.push(c.id); }
+    });
+    return out;
+  }
+  function dueCount() {
+    var now = Date.now();
+    return VOCAB.filter(function (w) { var r = rec(w.id); return r.seen && r.box < 5 && (store.settings.fast || r.due <= now); }).length;
+  }
+  function nextCard() {
+    var locked = CARDS.cards.filter(function (c) { return !store.unlocked[c.id]; });
+    locked.sort(function (a, b) { var pa = cardProg(a), pb = cardProg(b); return (pb.done / pb.total) - (pa.done / pa.total) || pa.total - pb.total; });
+    return locked[0] || null;
+  }
+  function cardById(id) { return CARDS.cards.filter(function (c) { return c.id === id; })[0]; }
+  function albumName(id) { var a = CARDS.albums.filter(function (x) { return x.id === id; })[0]; return a ? a.name_fr : id; }
+
+  /* ---------- voix ---------- */
+  var speechOK = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+  var VOICES = [];
+  function accentOf(v) {
+    var l = (v.lang || '').toLowerCase().replace('_', '-');
+    var n = (v.name || '').toLowerCase();
+    if (l.indexOf('hk') > -1 || n.indexOf('cantonese') > -1 || l.indexOf('yue') === 0) return null;
+    if (/-tw$/.test(l) || l.indexOf('hant') > -1) return 'tw';
+    if (l.indexOf('zh') === 0 || l.indexOf('cmn') === 0) return 'cn';
+    return null;
+  }
+  function loadVoices() {
+    if (!speechOK) return;
+    try { VOICES = window.speechSynthesis.getVoices().filter(function (v) { return accentOf(v); }); } catch (e) { VOICES = []; }
+  }
+  if (speechOK) { loadVoices(); try { window.speechSynthesis.onvoiceschanged = function () { loadVoices(); if (S.tab === 'reglages' && !S.quiz) render(); }; } catch (e) { /* ignoré */ } }
+  function audioOK() { return speechOK && VOICES.length > 0; }
+  function pickVoice() {
+    var a = store.settings.accent, pool;
+    if (a === 'mix') pool = VOICES;
+    else pool = VOICES.filter(function (v) { return accentOf(v) === a; });
+    if (!pool.length) pool = VOICES;
+    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+  }
+  function speak(trad, simp) {
+    if (!speechOK) return;
+    var v = pickVoice();
+    var acc = v ? accentOf(v) : (store.settings.accent === 'tw' ? 'tw' : 'cn');
+    var u = new SpeechSynthesisUtterance(acc === 'tw' ? trad : (simp || trad));
+    u.lang = v ? v.lang : (acc === 'tw' ? 'zh-TW' : 'zh-CN');
+    if (v) u.voice = v;
+    u.rate = store.settings.speed === 'slow' ? 0.6 : 0.9;
+    try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); } catch (e) { /* ignoré */ }
+  }
+  function sayWord(id) { var w = byId[id]; if (w) speak(w.hanzi_trad, w.hanzi_simp); }
+
+  /* ---------- session ---------- */
+  var S = { tab: 'jouer', quiz: null, sheet: null, confirmReset: false };
+
+  function enabledTypes() {
+    var t = TYPES.filter(function (k) { return store.settings.types[k] && (k.charAt(0) !== 'a' || audioOK()); });
+    return t.length ? t : ['h2p', 'h2f'];
+  }
+  function pickType(avoid) {
+    var t = enabledTypes();
+    var c = t.filter(function (k) { return k !== avoid; });
+    var pool = c.length ? c : t;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  function newWordScores() {
+    var locked = CARDS.cards.filter(function (c) { return !store.unlocked[c.id]; });
+    var score = {};
+    locked.forEach(function (c) {
+      var p = cardProg(c), r = p.done / p.total;
+      c.words_required.forEach(function (id) { score[id] = Math.max(score[id] || 0, r); });
+    });
+    return score;
+  }
+  function buildSession() {
+    var now = Date.now(), fast = store.settings.fast;
+    var seen = VOCAB.filter(function (w) { return rec(w.id).seen; });
+    var due = seen.filter(function (w) { var r = rec(w.id); return r.box < 5 && (fast || r.due <= now); })
+      .sort(function (a, b) { return rec(a.id).box - rec(b.id).box || rec(a.id).due - rec(b.id).due; });
+    var score = newWordScores();
+    var fresh = VOCAB.filter(function (w) { return !rec(w.id).seen; })
+      .sort(function (a, b) { return (score[b.id] || 0) - (score[a.id] || 0); });
+    var picked = due.slice(0, Math.ceil(PER_SESSION / 2));
+    fresh.forEach(function (w) { if (picked.length < PER_SESSION) picked.push(w); });
+    due.forEach(function (w) { if (picked.length < PER_SESSION && picked.indexOf(w) < 0) picked.push(w); });
+    seen.sort(function (a, b) { return rec(a.id).box - rec(b.id).box; }).forEach(function (w) { if (picked.length < PER_SESSION && picked.indexOf(w) < 0) picked.push(w); });
+    var first = shuffle(picked).map(function (w) { return { wid: w.id, type: pickType(), pass: 1 }; });
+    var second = shuffle(picked).map(function (w, i) {
+      var t1 = first.filter(function (q) { return q.wid === w.id; })[0].type;
+      return { wid: w.id, type: pickType(t1), pass: 2 };
+    });
+    if (second.length > 1 && first[first.length - 1].wid === second[0].wid) second.push(second.shift());
+    return first.concat(second);
+  }
+  function distractors(w, keyFn, n) {
+    var c = VOCAB.filter(function (x) { return x.id !== w.id && keyFn(x) !== keyFn(w) && x.pinyin !== w.pinyin; });
+    var same = shuffle(c.filter(function (x) { return x.hanzi_trad.length === w.hanzi_trad.length; }));
+    var rest = shuffle(c.filter(function (x) { return x.hanzi_trad.length !== w.hanzi_trad.length; }));
+    var out = [], seenK = {};
+    seenK[keyFn(w)] = 1;
+    same.concat(rest).some(function (x) { var k = keyFn(x); if (seenK[k]) return false; seenK[k] = 1; out.push(x); return out.length === n; });
+    return out;
+  }
+  var OPT_KIND = { h2p: 'p', a2p: 'p', p2h: 'h', f2h: 'h', a2h: 'h', h2f: 'f' };
+  var KEYFN = { h: function (x) { return x.hanzi_trad; }, p: function (x) { return x.pinyin; }, f: function (x) { return x.fr; } };
+  function setCurrent(Q) {
+    var q = Q.qs[Q.i], w = byId[q.wid], kind = OPT_KIND[q.type];
+    var opts = shuffle([w].concat(distractors(w, KEYFN[kind], 3))).map(function (x) { return { id: x.id, correct: x.id === w.id }; });
+    Q.cur = { q: q, kind: kind, opts: opts };
+    Q.picked = null;
+  }
+  function startQuiz() {
+    var qs = buildSession();
+    S.quiz = { qs: qs, i: 0, correct: 0, asked: 0, touched: [], retried: {}, done: false, newly: [] };
+    setCurrent(S.quiz);
+    window.scrollTo(0, 0);
+    render();
+    autoAudio();
+  }
+  function autoAudio() {
+    var Q = S.quiz;
+    if (Q && !Q.done && Q.picked === null && Q.cur.q.type.charAt(0) === 'a' && audioOK()) sayWord(Q.cur.q.wid);
+  }
+  function answer(idx) {
+    var Q = S.quiz;
+    if (!Q || Q.picked !== null) return;
+    var o = Q.cur.opts[idx], q = Q.cur.q, ok = o.correct;
+    Q.picked = idx; Q.asked++;
+    var r = store.words[q.wid] || (store.words[q.wid] = { box: 0, due: 0, seen: false });
+    r.seen = true;
+    if (ok) { r.box = Math.min(5, r.box + 1); r.due = store.settings.fast ? 0 : Date.now() + INTERVALS[r.box] * DAY; Q.correct++; }
+    else {
+      r.box = 0; r.due = 0;
+      if (!Q.retried[q.wid]) { Q.retried[q.wid] = 1; Q.qs.push({ wid: q.wid, type: pickType(q.type), pass: 3 }); }
+    }
+    if (Q.touched.indexOf(q.wid) < 0) Q.touched.push(q.wid);
+    save();
+    render();
+    if (store.settings.autoplay && audioOK()) sayWord(q.wid);
+  }
+  function nextQ() {
+    var Q = S.quiz;
+    if (!Q || Q.picked === null) return;
+    Q.i++;
+    if (Q.i >= Q.qs.length) { Q.newly = checkUnlocks(); Q.done = true; save(); window.scrollTo(0, 0); render(); return; }
+    setCurrent(Q);
+    window.scrollTo(0, 0);
+    render();
+    autoAudio();
+  }
+
+  /* ---------- vues ---------- */
+  function stateBadge(id) {
+    var r = rec(id);
+    if (!r.seen) return '<span class="badge">Nouveau</span>';
+    if (r.box >= MASTER) return '<span class="badge st-ok">Maîtrisé</span>';
+    return '<span class="badge st-go">En cours</span>';
+  }
+  function hintFor(w) { return store.settings.hint ? '<span class="hint py">' + esc(w.pinyin) + '</span>' : ''; }
+
+  function viewHome() {
+    var total = VOCAB.length, m = VOCAB.filter(function (w) { return mastered(w.id); }).length;
+    var got = CARDS.cards.filter(function (c) { return store.unlocked[c.id]; }).length;
+    var due = dueCount(), nx = nextCard();
+    var audioNote = (speechOK && !VOCAB.length) ? '' : (!audioOK() ? '<p class="note">Aucune voix chinoise détectée sur cet appareil : les exercices d\'écoute sont désactivés. Installe une voix mandarin dans les réglages du système pour les activer.</p>' : '');
+    var h = '<section class="panel"><div class="stat"><div><b>' + m + '</b> <span class="muted">/ ' + total + ' mots maîtrisés</span></div><div class="small muted">' + got + ' / ' + CARDS.cards.length + ' cartes</div></div>' +
+      '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + m + '"><i style="width:' + Math.round(100 * m / total) + '%"></i></div>' +
+      '<button type="button" class="btn primary" data-action="start">Commencer une session</button>' +
+      '<p class="small muted">' + PER_SESSION + ' mots, chacun posé deux fois sous des formes différentes.' + (due ? ' ' + due + ' mot' + (due > 1 ? 's' : '') + ' à revoir.' : '') + '</p></section>' + audioNote;
+    if (nx) {
+      var p = cardProg(nx);
+      h += '<section class="panel"><h3>Prochaine carte</h3><div class="stat"><div><span class="badge r-' + RAR[nx.rarity] + '">' + esc(nx.rarity) + '</span> <span class="muted small">' + esc(albumName(nx.album)) + '</span></div>' + dots(nx) + '</div>' +
+        '<p class="small muted">' + p.done + ' mot' + (p.done > 1 ? 's' : '') + ' maîtrisé' + (p.done > 1 ? 's' : '') + ' sur ' + p.total + '. Maîtrise-les pour la débloquer.</p>' +
+        '<button type="button" class="btn ghost small" data-action="card" data-id="' + nx.id + '">Voir les mots</button></section>';
+    }
+    h += '<details class="panel"><summary>Lexique (' + total + ' mots)</summary><div class="lex">' + VOCAB.map(function (w) {
+      return '<button type="button" class="lex-row" data-action="say" data-id="' + w.id + '"><span class="han">' + esc(w.hanzi_trad) + '</span><span class="meta"><span class="py">' + esc(w.pinyin) + '</span><span class="small muted">' + esc(w.fr) + '</span></span>' + stateBadge(w.id) + '</button>';
+    }).join('') + '</div></details>';
+    return h;
+  }
+
+  function optHTML(o, i, Q) {
+    var w = byId[o.id], kind = Q.cur.kind, picked = Q.picked !== null;
+    var cls = 'opt';
+    if (picked) { if (o.correct) cls += ' right'; else if (i === Q.picked) cls += ' wrong'; }
+    var inner = kind === 'h' ? '<span class="han">' + esc(w.hanzi_trad) + '</span>' + hintFor(w) : kind === 'p' ? '<span class="py">' + esc(w.pinyin) + '</span>' : '<span class="fr">' + esc(w.fr) + '</span>';
+    return '<button type="button" class="' + cls + '" data-action="pick" data-i="' + i + '"' + (picked ? ' disabled' : '') + '>' + inner + '</button>';
+  }
+  function viewQuiz() {
+    var Q = S.quiz;
+    if (Q.done) return viewEnd(Q);
+    var q = Q.cur.q, w = byId[q.wid], t = q.type, picked = Q.picked !== null;
+    var pct = Math.round(100 * Q.i / Q.qs.length);
+    var h = '<div class="qhead"><button type="button" class="btn ghost small" data-action="quit" aria-label="Quitter la session">Quitter</button><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + Q.qs.length + '" aria-valuenow="' + Q.i + '"><i style="width:' + pct + '%"></i></div><span class="qcount">' + (Q.i + 1) + '/' + Q.qs.length + '</span></div>';
+    var prompt = '';
+    if (t === 'h2p' || t === 'h2f') prompt = '<div class="prompt-han">' + esc(w.hanzi_trad) + '</div>' + (t === 'h2f' ? hintFor(w) : '');
+    else if (t === 'p2h') prompt = '<div class="prompt-py">' + esc(w.pinyin) + '</div>';
+    else if (t === 'f2h') prompt = '<div class="prompt-fr">' + esc(w.fr) + '</div>';
+    else prompt = '<button type="button" class="say big" data-action="say" data-id="' + w.id + '" aria-label="Écouter le mot">' + ICON_SPEAKER + '</button>';
+    h += '<section class="qprompt"><div class="qlabel">' + TYPE_LABEL[t] + '</div>' + prompt + '</section>';
+    h += '<div class="opts' + (Q.cur.kind === 'f' ? ' one' : '') + '">' + Q.cur.opts.map(function (o, i) { return optHTML(o, i, Q); }).join('') + '</div>';
+    if (picked) {
+      var ok = Q.cur.opts[Q.picked].correct;
+      h += '<section class="fb' + (ok ? '' : ' bad') + '"><div class="fb-top"><div class="fb-word"><span class="fb-title">' + (ok ? 'Bonne réponse' : 'Pas tout à fait') + '</span><span class="han">' + esc(w.hanzi_trad) + '</span><span class="py">' + esc(w.pinyin) + '</span><span class="small">' + esc(w.fr) + '</span></div>' +
+        (audioOK() ? '<button type="button" class="say" data-action="say" data-id="' + w.id + '" aria-label="Écouter le mot">' + ICON_SPEAKER + '</button>' : '') + '</div>' +
+        (w.note ? '<p class="small">' + esc(w.note) + '</p>' : '') +
+        '<button type="button" class="btn primary" data-action="next">' + (Q.i + 1 >= Q.qs.length ? 'Terminer' : 'Suivant') + '</button></section>';
+    }
+    return h;
+  }
+  function viewEnd(Q) {
+    var h = '<section class="panel"><h2>Session terminée</h2><div class="stat"><span class="score">' + Q.correct + '/' + Q.asked + '</span><span class="muted">bonnes réponses</span></div></section>';
+    if (Q.newly.length) {
+      h += '<section class="panel"><h3>' + (Q.newly.length > 1 ? 'Nouvelles cartes' : 'Nouvelle carte') + '</h3><div class="tiles">' + Q.newly.map(function (id) {
+        var c = cardById(id);
+        return '<button type="button" class="tile r-' + RAR[c.rarity] + ' stamp" data-action="card" data-id="' + c.id + '"><span class="seal r-' + RAR[c.rarity] + '">' + esc(c.name_hanzi_trad) + '</span><span class="name">' + esc(c.name_fr) + '</span></button>';
+      }).join('') + '</div></section>';
+    }
+    h += '<section class="panel"><h3>Mots travaillés</h3><div class="lex">' + Q.touched.map(function (id) {
+      var w = byId[id];
+      return '<button type="button" class="lex-row" data-action="say" data-id="' + id + '"><span class="han">' + esc(w.hanzi_trad) + '</span><span class="meta"><span class="py">' + esc(w.pinyin) + '</span><span class="small muted">' + esc(w.fr) + '</span></span>' + stateBadge(id) + '</button>';
+    }).join('') + '</div></section>' +
+      '<button type="button" class="btn primary" data-action="start">Une autre session</button>' +
+      '<button type="button" class="btn" data-action="quit">Retour</button>';
+    return h;
+  }
+
+  function tileHTML(c) {
+    var un = !!store.unlocked[c.id], r = RAR[c.rarity], p = cardProg(c);
+    if (un) return '<button type="button" class="tile r-' + r + '" data-action="card" data-id="' + c.id + '"><span class="seal r-' + r + '">' + esc(c.name_hanzi_trad) + '</span><span class="name">' + esc(c.name_fr) + '</span><span class="small muted py">' + esc(c.pinyin) + '</span><span class="grow"></span><span class="badge r-' + r + '">' + esc(c.rarity) + '</span></button>';
+    return '<button type="button" class="tile locked" data-action="card" data-id="' + c.id + '" aria-label="Carte verrouillée, ' + p.done + ' mots sur ' + p.total + '"><span class="q" aria-hidden="true">?</span><span class="name muted">Carte à débloquer</span><span class="grow"></span>' + dots(c) + '<span class="badge r-' + r + '">' + esc(c.rarity) + '</span></button>';
+  }
+  function viewCollection() {
+    var got = CARDS.cards.filter(function (c) { return store.unlocked[c.id]; }).length;
+    var h = '<div class="stat"><h2>Collection</h2><span class="muted">' + got + ' / ' + CARDS.cards.length + '</span></div>';
+    CARDS.albums.forEach(function (a) {
+      var cs = CARDS.cards.filter(function (c) { return c.album === a.id; });
+      if (!cs.length) return;
+      h += '<section class="stack"><h3>' + esc(a.name_fr) + '</h3><div class="tiles">' + cs.map(tileHTML).join('') + '</div></section>';
+    });
+    return h;
+  }
+
+  function seg(key, val, label, cur) { return '<button type="button" data-action="set" data-key="' + key + '" data-val="' + val + '" aria-pressed="' + (cur === val) + '">' + label + '</button>'; }
+  function viewSettings() {
+    var s = store.settings;
+    var names = VOICES.map(function (v) { return esc(v.name) + ' (' + esc(v.lang) + ')'; });
+    var h = '<h2>Réglages</h2>';
+    h += '<section class="panel"><h3>Voix</h3><div class="field"><span class="small muted">Accent</span><div class="seg">' +
+      seg('accent', 'cn', 'Chine continentale', s.accent) + seg('accent', 'tw', 'Taïwan', s.accent) + seg('accent', 'mix', 'Voix variées', s.accent) + '</div></div>' +
+      '<div class="field"><span class="small muted">Vitesse</span><div class="seg">' + seg('speed', 'slow', 'Lente', s.speed) + seg('speed', 'normal', 'Normale', s.speed) + '</div></div>' +
+      '<button type="button" class="btn small" data-action="testvoice"' + (audioOK() ? '' : ' disabled') + '>Tester la voix (你好)</button>' +
+      '<p class="small muted">' + (audioOK() ? VOICES.length + ' voix mandarin détectée' + (VOICES.length > 1 ? 's' : '') + ' : ' + names.join(', ') + '.' : 'Aucune voix chinoise détectée sur cet appareil.') + ' Les voix dépendent de ton appareil et de ton navigateur.</p>' +
+      (audioOK() && s.accent !== 'mix' && !VOICES.some(function (v) { return accentOf(v) === s.accent; }) ? '<p class="note">Aucune voix pour cet accent sur cet appareil : une autre voix mandarin est utilisée.</p>' : '') + '</section>';
+    h += '<section class="panel"><h3>Affichage</h3>' +
+      '<label class="check"><input type="checkbox" id="set-hint" data-set="hint"' + (s.hint ? ' checked' : '') + '><span>Afficher le pinyin sous les caractères</span></label>' +
+      '<label class="check"><input type="checkbox" id="set-autoplay" data-set="autoplay"' + (s.autoplay ? ' checked' : '') + '><span>Lire le mot après chaque réponse</span></label></section>';
+    h += '<section class="panel"><h3>Exercices</h3>' + TYPES.map(function (k) {
+      var dis = k.charAt(0) === 'a' && !audioOK();
+      return '<label class="check"><input type="checkbox" id="set-type-' + k + '" data-type="' + k + '"' + (s.types[k] ? ' checked' : '') + (dis ? ' disabled' : '') + '><span>' + TYPE_NAME[k] + (dis ? ' <span class="muted small">(voix requise)</span>' : '') + '</span></label>';
+    }).join('') + '</section>';
+    h += '<section class="panel"><h3>Outils de test</h3>' +
+      '<label class="check"><input type="checkbox" id="set-fast" data-set="fast"' + (s.fast ? ' checked' : '') + '><span>Révisions immédiates (ignore les délais)</span></label>' +
+      '<button type="button" class="btn" data-action="masterall">Tout maîtriser (débloque les cartes)</button>' +
+      (S.confirmReset ? '<button type="button" class="btn danger" data-action="reset-yes">Confirmer : effacer ma progression</button><button type="button" class="btn ghost" data-action="reset-no">Annuler</button>' : '<button type="button" class="btn danger" data-action="reset">Réinitialiser la progression</button>') +
+      '<p class="small muted">La progression reste dans ce navigateur, sur cet appareil.</p></section>';
+    return h;
+  }
+
+  function sheetHTML(c) {
+    var un = !!store.unlocked[c.id], r = RAR[c.rarity];
+    var chips = c.words_required.map(function (id) {
+      var w = byId[id], ok = mastered(id);
+      return '<span class="chip' + (ok ? ' ok' : '') + '"><span class="han">' + esc(w.hanzi_trad) + '</span><span class="small py">' + esc(w.pinyin) + '</span><span class="small muted">' + esc(w.fr) + '</span></span>';
+    }).join('');
+    var h = '<div class="sheet-head"><div class="stack" style="gap:8px">';
+    if (un) h += '<span class="seal r-' + r + '" style="font-size:3.2rem">' + esc(c.name_hanzi_trad) + '</span><h2>' + esc(c.name_fr) + '</h2><span class="py">' + esc(c.pinyin) + '</span>';
+    else h += '<span class="han" style="font-size:3rem;color:var(--muted)">?</span><h2>Carte à débloquer</h2>';
+    h += '<div><span class="badge r-' + r + '">' + esc(c.rarity) + '</span> <span class="small muted">' + esc(albumName(c.album)) + '</span></div></div><button type="button" class="btn small" data-action="closesheet" id="sheetclose">Fermer</button></div>';
+    if (un) {
+      h += '<p>' + esc(c.text_fr) + '</p><div class="phrase"><span class="han">' + esc(c.phrase.hanzi_trad) + '</span><span class="py">' + esc(c.phrase.pinyin) + '</span><span class="small muted">' + esc(c.phrase.fr) + '</span>' +
+        (audioOK() ? '<div><button type="button" class="say" data-action="saycard" data-id="' + c.id + '" aria-label="Écouter la phrase">' + ICON_SPEAKER + '</button></div>' : '') + '</div>';
+    } else h += '<p class="muted">Maîtrise ces mots pour révéler la carte.</p>';
+    h += '<div class="stack" style="gap:8px"><h3>Mots à maîtriser</h3><div class="chips">' + chips + '</div></div>';
+    return h;
+  }
+
+  /* ---------- rendu ---------- */
+  var view = document.getElementById('view');
+  var sheet = document.getElementById('sheet');
+  var sheetPanel = document.getElementById('sheetpanel');
+  function render() {
+    var h;
+    if (S.quiz) h = viewQuiz();
+    else if (S.tab === 'collection') h = viewCollection();
+    else if (S.tab === 'reglages') h = viewSettings();
+    else h = viewHome();
+    view.innerHTML = h;
+    Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+      if (b.getAttribute('data-tab') === S.tab && !S.quiz) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+    if (S.sheet) {
+      var c = cardById(S.sheet);
+      sheetPanel.innerHTML = sheetHTML(c);
+      sheet.hidden = false;
+    } else sheet.hidden = true;
+  }
+  function openSheet(id) { S.sheet = id; render(); var b = document.getElementById('sheetclose'); if (b) b.focus(); }
+  function closeSheet() { S.sheet = null; render(); }
+
+  /* ---------- événements ---------- */
+  function onAction(el) {
+    var a = el.getAttribute('data-action'), id = el.getAttribute('data-id');
+    if (a === 'start') startQuiz();
+    else if (a === 'quit') { S.quiz = null; window.scrollTo(0, 0); render(); }
+    else if (a === 'pick') answer(parseInt(el.getAttribute('data-i'), 10));
+    else if (a === 'next') nextQ();
+    else if (a === 'say') sayWord(id);
+    else if (a === 'saycard') { var c = cardById(id); if (c) speak(c.phrase.hanzi_trad, c.phrase.hanzi_simp || c.phrase.hanzi_trad); }
+    else if (a === 'card') openSheet(id);
+    else if (a === 'closesheet') closeSheet();
+    else if (a === 'set') { store.settings[el.getAttribute('data-key')] = el.getAttribute('data-val'); save(); render(); }
+    else if (a === 'testvoice') speak('你好', '你好');
+    else if (a === 'masterall') { VOCAB.forEach(function (w) { store.words[w.id] = { box: MASTER, due: Date.now() + DAY, seen: true }; }); checkUnlocks(); save(); render(); }
+    else if (a === 'reset') { S.confirmReset = true; render(); }
+    else if (a === 'reset-no') { S.confirmReset = false; render(); }
+    else if (a === 'reset-yes') { var keep = store.settings; store = defaults(); store.settings = keep; S.confirmReset = false; save(); render(); }
+  }
+  view.addEventListener('click', function (e) { var el = e.target.closest('[data-action]'); if (el && !el.disabled) onAction(el); });
+  sheet.addEventListener('click', function (e) {
+    if (e.target === sheet) { closeSheet(); return; }
+    var el = e.target.closest('[data-action]'); if (el && !el.disabled) onAction(el);
+  });
+  view.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.hasAttribute('data-set')) { store.settings[t.getAttribute('data-set')] = t.checked; save(); render(); }
+    else if (t.hasAttribute('data-type')) { store.settings.types[t.getAttribute('data-type')] = t.checked; save(); render(); }
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+    b.addEventListener('click', function () { S.quiz = null; S.tab = b.getAttribute('data-tab'); S.confirmReset = false; window.scrollTo(0, 0); render(); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && S.sheet) closeSheet(); });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

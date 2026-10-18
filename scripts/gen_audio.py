@@ -28,12 +28,13 @@ def load(name):
 
 
 def build_items():
-    """Retourne {id: texte à prononcer} : mots (wXXX) et phrases de cartes (cXXX)."""
+    """Retourne {id: (traditionnel, simplifié)} : mots (wXXX) et phrases de cartes (cXXX)."""
     items = {}
     for w in load("vocab.json")["words"]:
-        items[w["id"]] = w["hanzi_trad"]
+        items[w["id"]] = (w["hanzi_trad"], w.get("hanzi_simp", w["hanzi_trad"]))
     for c in load("cards.json")["cards"]:
-        items[c["id"]] = c["phrase"]["hanzi_trad"]
+        ph = c["phrase"]
+        items[c["id"]] = (ph["hanzi_trad"], ph.get("hanzi_simp", ph["hanzi_trad"]))
     return items
 
 
@@ -74,7 +75,9 @@ async def run(args):
     jobs = []
     for voice in voices:
         for speed in speeds:
-            for item_id, text in items.items():
+            for item_id, (trad, simp) in items.items():
+                # Les voix de Chine continentale lisent le texte simplifié, celles de Taïwan le traditionnel
+                text = trad if voice.startswith("zh-TW") else simp
                 out = AUDIO / voice / speed / f"{item_id}.mp3"
                 if not out.exists() or args.force:
                     jobs.append((text, voice, cfg["speeds"][speed], out))
