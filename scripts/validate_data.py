@@ -45,7 +45,8 @@ def main():
             errors.append(f"{wid}: pinyin avec chiffres ({pinyin}), utiliser les diacritiques")
         # Chaque syllabe doit porter un ton, sauf les tons neutres (2e syllabe d'un mot)
         syllables = pinyin.split()
-        if len(syllables) == 1 and not any(c in TONE_MARKS for c in pinyin) and len(w.get("hanzi_trad", "")) == 1:
+        is_particle = "particule" in w.get("fr", "")  # ma, de : ton neutre légitime
+        if len(syllables) == 1 and not any(c in TONE_MARKS for c in pinyin) and len(w.get("hanzi_trad", "")) == 1 and not is_particle:
             errors.append(f"{wid}: caractère seul sans marque de ton ({pinyin})")
         if not w.get("hanzi_trad", "").strip():
             errors.append(f"{wid}: hanzi_trad vide")
@@ -61,6 +62,8 @@ def main():
         if cid in seen_cards:
             errors.append(f"{cid}: id en double")
         seen_cards.add(cid)
+        if c.get("image_file") and not c.get("image_credit"):
+            errors.append(f"{cid}: image_file sans image_credit (auteur et licence obligatoires)")
         if c.get("album") not in albums:
             errors.append(f"{cid}: album inconnu '{c.get('album')}'")
         if c.get("rarity") not in rarities:

@@ -11,26 +11,29 @@ Premier prototype jouable : appli web statique (un seul fichier HTML) avec six t
 ## Contenu
 
 ```
-data/vocab.json    58 mots : hanzi_trad, hanzi_simp, pinyin, fr, tags, sources
-data/cards.json    5 cartes culturelles + albums (monuments, animaux, boissons, fêtes)
+data/vocab.json    130 mots : hanzi_trad, hanzi_simp, pinyin, fr, tags, sources
+data/cards.json    12 cartes culturelles + 5 albums (monuments et sites, animaux, cuisine, fêtes, arts)
 data/voices.json   4 voix (mandarin standard zh-CN et mandarin de Taïwan zh-TW) et 2 vitesses
 app/index.template.html    source de l'appli (HTML, CSS et JS)
 scripts/build_app.py       assemble l'appli et ses données dans index.html
 index.html                 appli prête à servir (GitHub Pages : branche main, racine /)
 scripts/validate_data.py   vérifie la cohérence des données
 scripts/gen_audio.py       génère les audios mp3 pour chaque voix et vitesse
+scripts/commons.py         cherche des images sur Wikimedia Commons et remplit les crédits
 ```
 
 ## Données
 
 - **Mots** : chaque mot a un `id` stable (`w001`…). Le pinyin utilise les diacritiques (mā), pas les chiffres (ma1). Les tons neutres suivent l'usage du continent (xièxie, péngyou) ; les voix zh-TW peuvent les prononcer avec un ton plein.
 - **Sources** : le champ `sources` croise HSK, TOCFL et EBCL. Pour l'instant il est rempli **de mémoire** (HSK 2.0) et `sources_verified` vaut `false` : TOCFL et EBCL restent à croiser avec les listes officielles. Une liste vide signifie « mot ajouté pour la collection culturelle, ou pas encore vérifié ».
-- **Cartes** : une carte se débloque quand tous ses `words_required` sont maîtrisés. Le nom de la carte est lui-même du vocabulaire, et chaque carte a une phrase d'exemple construite uniquement avec ses mots requis (vérifié par `validate_data.py`). Les champs `image` et `image_credit` sont à remplir avec des fichiers de Wikimedia Commons (auteur et licence à créditer).
+- **Cartes** : une carte se débloque quand tous ses `words_required` sont maîtrisés. Le nom de la carte est lui-même du vocabulaire, et chaque carte a une phrase d'exemple construite uniquement avec ses mots requis (vérifié par `validate_data.py`). Les images viennent de Wikimedia Commons : `image_file` (nom du fichier, avec des `_`), `image_credit` (auteur et licence), `image_verified`. L'appli affiche l'image et le crédit avec un lien vers la page Commons. Aujourd'hui 5 cartes sur 12 ont une image ; seule celle de la Grande Muraille a une licence relue sur la page Commons actuelle (`image_verified: true`), les autres sont à confirmer avec `python3 scripts/commons.py fill`.
 
 ## Utilisation
 
 ```bash
 python3 scripts/validate_data.py            # vérifier les données
+python3 scripts/commons.py search "Temple of Heaven Beijing"   # trouver des photos libres (réseau requis)
+python3 scripts/commons.py fill             # lire auteur et licence des image_file sur Commons
 python3 scripts/build_app.py                # régénérer index.html après un changement de données
 
 pip install -r requirements.txt

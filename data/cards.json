@@ -1,14 +1,34 @@
 {
   "_meta": {
     "description": "Cartes culturelles à collectionner. Une carte se débloque quand tous les mots de 'words_required' sont maîtrisés.",
-    "rarities": ["commune", "rare", "légendaire"],
-    "image_note": "Les images viennent de Wikimedia Commons (licences libres). 'image' et 'image_credit' sont à remplir avec le fichier choisi, son auteur et sa licence."
+    "rarities": [
+      "commune",
+      "rare",
+      "légendaire"
+    ],
+    "image_note": "Les images viennent de Wikimedia Commons (licences libres). 'image_file' est le nom du fichier Commons (avec des _), 'image_credit' l'auteur et la licence, 'image_verified' indique si la licence a été relue sur la page Commons actuelle."
   },
   "albums": [
-    {"id": "monuments", "name_fr": "Monuments"},
-    {"id": "animaux", "name_fr": "Animaux"},
-    {"id": "nourriture", "name_fr": "Boissons et cuisine"},
-    {"id": "fetes", "name_fr": "Fêtes"}
+    {
+      "id": "monuments",
+      "name_fr": "Monuments et sites"
+    },
+    {
+      "id": "animaux",
+      "name_fr": "Animaux"
+    },
+    {
+      "id": "nourriture",
+      "name_fr": "Boissons et cuisine"
+    },
+    {
+      "id": "fetes",
+      "name_fr": "Fêtes"
+    },
+    {
+      "id": "arts",
+      "name_fr": "Arts et traditions"
+    }
   ],
   "cards": [
     {
@@ -19,11 +39,21 @@
       "album": "monuments",
       "rarity": "légendaire",
       "text_fr": "Réseau de fortifications long de milliers de kilomètres, construit et reconstruit par plusieurs dynasties. Les tronçons les plus visités datent surtout de la dynastie Ming.",
-      "phrase": {"hanzi_trad": "長城在中國。", "hanzi_simp": "长城在中国。", "pinyin": "Chángchéng zài Zhōngguó.", "fr": "La Grande Muraille est en Chine."},
-      "words_required": ["w056", "w049", "w037"],
-      "image": null,
-      "image_credit": null,
-      "image_hint": "Great Wall of China, Badaling (Wikimedia Commons)"
+      "phrase": {
+        "hanzi_trad": "長城在中國。",
+        "hanzi_simp": "长城在中国。",
+        "pinyin": "Chángchéng zài Zhōngguó.",
+        "fr": "La Grande Muraille est en Chine."
+      },
+      "words_required": [
+        "w056",
+        "w049",
+        "w037"
+      ],
+      "image_hint": "Great Wall of China, Badaling (Wikimedia Commons)",
+      "image_file": "Badaling_China_Great-Wall-of-China-01.jpg",
+      "image_credit": "CEphoto, Uwe Aranas, CC BY-SA 3.0",
+      "image_verified": true
     },
     {
       "id": "c002",
@@ -33,11 +63,21 @@
       "album": "monuments",
       "rarity": "rare",
       "text_fr": "Ancien palais impérial des dynasties Ming et Qing, au cœur de Pékin. Il abrite aujourd'hui le musée du Palais.",
-      "phrase": {"hanzi_trad": "紫禁城在北京。", "hanzi_simp": "紫禁城在北京。", "pinyin": "Zǐjìnchéng zài Běijīng.", "fr": "La Cité interdite est à Pékin."},
-      "words_required": ["w057", "w049", "w039"],
-      "image": null,
-      "image_credit": null,
-      "image_hint": "Forbidden City, Beijing (Wikimedia Commons)"
+      "phrase": {
+        "hanzi_trad": "紫禁城在北京。",
+        "hanzi_simp": "紫禁城在北京。",
+        "pinyin": "Zǐjìnchéng zài Běijīng.",
+        "fr": "La Cité interdite est à Pékin."
+      },
+      "words_required": [
+        "w057",
+        "w049",
+        "w039"
+      ],
+      "image_hint": "Forbidden City, Beijing (Wikimedia Commons)",
+      "image_file": "Forbidden_City1.JPG",
+      "image_credit": "Allen Timothy Chang, GFDL 1.2 ou ultérieure",
+      "image_verified": false
     },
     {
       "id": "c003",
@@ -47,11 +87,21 @@
       "album": "animaux",
       "rarity": "commune",
       "text_fr": "Le panda géant vit à l'état sauvage dans les montagnes du centre de la Chine, notamment au Sichuan.",
-      "phrase": {"hanzi_trad": "我愛熊貓。", "hanzi_simp": "我爱熊猫。", "pinyin": "Wǒ ài xióngmāo.", "fr": "J'aime les pandas."},
-      "words_required": ["w034", "w054", "w002"],
-      "image": null,
-      "image_credit": null,
-      "image_hint": "Giant panda (Wikimedia Commons)"
+      "phrase": {
+        "hanzi_trad": "我愛熊貓。",
+        "hanzi_simp": "我爱熊猫。",
+        "pinyin": "Wǒ ài xióngmāo.",
+        "fr": "J'aime les pandas."
+      },
+      "words_required": [
+        "w034",
+        "w054",
+        "w002"
+      ],
+      "image_hint": "Giant panda (Wikimedia Commons)",
+      "image_file": "Lightmatter_panda.jpg",
+      "image_credit": "Aaron Logan, CC BY 1.0",
+      "image_verified": false
     },
     {
       "id": "c004",
@@ -61,11 +111,21 @@
       "album": "nourriture",
       "rarity": "commune",
       "text_fr": "La Chine est l'un des berceaux historiques du thé, bu au quotidien comme lors des occasions importantes.",
-      "phrase": {"hanzi_trad": "我喝茶。", "hanzi_simp": "我喝茶。", "pinyin": "Wǒ hē chá.", "fr": "Je bois du thé."},
-      "words_required": ["w030", "w033", "w002"],
-      "image": null,
-      "image_credit": null,
-      "image_hint": "Chinese tea ceremony, gaiwan (Wikimedia Commons)"
+      "phrase": {
+        "hanzi_trad": "我喝茶。",
+        "hanzi_simp": "我喝茶。",
+        "pinyin": "Wǒ hē chá.",
+        "fr": "Je bois du thé."
+      },
+      "words_required": [
+        "w030",
+        "w033",
+        "w002"
+      ],
+      "image_hint": "Chinese tea ceremony, gaiwan (Wikimedia Commons)",
+      "image_file": "Tea_leaves_steeping_in_a_zhong_čaj_05.jpg",
+      "image_credit": "Wikimol, CC BY-SA 2.5",
+      "image_verified": false
     },
     {
       "id": "c005",
@@ -75,11 +135,190 @@
       "album": "fetes",
       "rarity": "rare",
       "text_fr": "Le Nouvel An lunaire, la plus grande fête de l'année : retrouvailles en famille, repas, lanternes et enveloppes rouges.",
-      "phrase": {"hanzi_trad": "春節快樂！", "hanzi_simp": "春节快乐！", "pinyin": "Chūnjié kuàilè!", "fr": "Joyeuse fête du printemps !"},
-      "words_required": ["w058", "w055"],
-      "image": null,
+      "phrase": {
+        "hanzi_trad": "春節快樂！",
+        "hanzi_simp": "春节快乐！",
+        "pinyin": "Chūnjié kuàilè!",
+        "fr": "Joyeuse fête du printemps !"
+      },
+      "words_required": [
+        "w058",
+        "w055"
+      ],
+      "image_hint": "Chinese New Year lanterns (Wikimedia Commons)",
+      "image_file": null,
       "image_credit": null,
-      "image_hint": "Chinese New Year lanterns (Wikimedia Commons)"
+      "image_verified": false
+    },
+    {
+      "id": "c006",
+      "name_hanzi_trad": "兵馬俑",
+      "pinyin": "Bīngmǎyǒng",
+      "name_fr": "L'armée de terre cuite",
+      "album": "monuments",
+      "rarity": "légendaire",
+      "text_fr": "Des milliers de soldats en terre cuite, enterrés près du mausolée du premier empereur Qin et découverts en 1974 près de Xi'an.",
+      "phrase": {
+        "hanzi_trad": "兵馬俑在西安。",
+        "hanzi_simp": "兵马俑在西安。",
+        "pinyin": "Bīngmǎyǒng zài Xī'ān.",
+        "fr": "L'armée de terre cuite est à Xi'an."
+      },
+      "words_required": [
+        "w125",
+        "w049",
+        "w108"
+      ],
+      "image_file": null,
+      "image_credit": null,
+      "image_verified": false,
+      "image_hint": "Terracotta Army, Xi'an (Wikimedia Commons)"
+    },
+    {
+      "id": "c007",
+      "name_hanzi_trad": "天壇",
+      "pinyin": "Tiāntán",
+      "name_fr": "Le Temple du Ciel",
+      "album": "monuments",
+      "rarity": "rare",
+      "text_fr": "Complexe de Pékin où les empereurs des dynasties Ming et Qing priaient pour de bonnes récoltes.",
+      "phrase": {
+        "hanzi_trad": "天壇在北京。",
+        "hanzi_simp": "天坛在北京。",
+        "pinyin": "Tiāntán zài Běijīng.",
+        "fr": "Le Temple du Ciel est à Pékin."
+      },
+      "words_required": [
+        "w126",
+        "w049",
+        "w039"
+      ],
+      "image_file": null,
+      "image_credit": null,
+      "image_verified": false,
+      "image_hint": "Temple of Heaven, Beijing (Wikimedia Commons)"
+    },
+    {
+      "id": "c008",
+      "name_hanzi_trad": "西湖",
+      "pinyin": "Xīhú",
+      "name_fr": "Le lac de l'Ouest",
+      "album": "monuments",
+      "rarity": "rare",
+      "text_fr": "Lac de Hangzhou entouré de collines, de pagodes et de jardins, inscrit au patrimoine mondial de l'UNESCO.",
+      "phrase": {
+        "hanzi_trad": "西湖在杭州。",
+        "hanzi_simp": "西湖在杭州。",
+        "pinyin": "Xīhú zài Hángzhōu.",
+        "fr": "Le lac de l'Ouest est à Hangzhou."
+      },
+      "words_required": [
+        "w127",
+        "w049",
+        "w109"
+      ],
+      "image_file": null,
+      "image_credit": null,
+      "image_verified": false,
+      "image_hint": "West Lake, Hangzhou (Wikimedia Commons)"
+    },
+    {
+      "id": "c009",
+      "name_hanzi_trad": "餃子",
+      "pinyin": "jiǎozi",
+      "name_fr": "Les raviolis chinois",
+      "album": "nourriture",
+      "rarity": "commune",
+      "text_fr": "Raviolis farcis de viande et de légumes, traditionnellement mangés en famille au Nouvel An lunaire, surtout dans le nord.",
+      "phrase": {
+        "hanzi_trad": "我愛吃餃子。",
+        "hanzi_simp": "我爱吃饺子。",
+        "pinyin": "Wǒ ài chī jiǎozi.",
+        "fr": "J'aime manger des jiaozi."
+      },
+      "words_required": [
+        "w088",
+        "w002",
+        "w054",
+        "w032"
+      ],
+      "image_file": null,
+      "image_credit": null,
+      "image_verified": false,
+      "image_hint": "Jiaozi, Chinese dumplings (Wikimedia Commons)"
+    },
+    {
+      "id": "c010",
+      "name_hanzi_trad": "京劇",
+      "pinyin": "jīngjù",
+      "name_fr": "L'opéra de Pékin",
+      "album": "arts",
+      "rarity": "rare",
+      "text_fr": "Art qui mêle chant, mime, acrobatie et costumes colorés. Le maquillage et les couleurs indiquent le caractère de chaque personnage.",
+      "phrase": {
+        "hanzi_trad": "我愛京劇。",
+        "hanzi_simp": "我爱京剧。",
+        "pinyin": "Wǒ ài jīngjù.",
+        "fr": "J'aime l'opéra de Pékin."
+      },
+      "words_required": [
+        "w128",
+        "w002",
+        "w054"
+      ],
+      "image_file": null,
+      "image_credit": null,
+      "image_verified": false,
+      "image_hint": "Beijing opera performer (Wikimedia Commons)"
+    },
+    {
+      "id": "c011",
+      "name_hanzi_trad": "書法",
+      "pinyin": "shūfǎ",
+      "name_fr": "La calligraphie",
+      "album": "arts",
+      "rarity": "rare",
+      "text_fr": "Art d'écrire les caractères au pinceau, considéré en Chine comme l'un des grands arts, avec la peinture.",
+      "phrase": {
+        "hanzi_trad": "我愛書法。",
+        "hanzi_simp": "我爱书法。",
+        "pinyin": "Wǒ ài shūfǎ.",
+        "fr": "J'aime la calligraphie."
+      },
+      "words_required": [
+        "w129",
+        "w002",
+        "w054"
+      ],
+      "image_file": null,
+      "image_credit": null,
+      "image_verified": false,
+      "image_hint": "Chinese calligraphy (Wikimedia Commons)"
+    },
+    {
+      "id": "c012",
+      "name_hanzi_trad": "功夫",
+      "pinyin": "gōngfu",
+      "name_fr": "Le kung-fu",
+      "album": "arts",
+      "rarity": "commune",
+      "text_fr": "Le mot désigne à l'origine une habileté acquise par un long effort. Il est devenu synonyme des arts martiaux chinois, comme ceux du temple de Shaolin.",
+      "phrase": {
+        "hanzi_trad": "我愛中國功夫。",
+        "hanzi_simp": "我爱中国功夫。",
+        "pinyin": "Wǒ ài Zhōngguó gōngfu.",
+        "fr": "J'aime le kung-fu chinois."
+      },
+      "words_required": [
+        "w130",
+        "w002",
+        "w054",
+        "w037"
+      ],
+      "image_file": "Shaolin-wushu.jpg",
+      "image_credit": "Auteur inconnu (fresque du XIXe siècle, temple de Shaolin), domaine public (PD-Art)",
+      "image_verified": false,
+      "image_hint": "Shaolin kung fu (Wikimedia Commons)"
     }
   ]
 }

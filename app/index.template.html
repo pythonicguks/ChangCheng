@@ -126,10 +126,16 @@ h3 { font-size: 1rem; }
 .tile.r-rare { border-color: var(--accent); }
 .tile.r-legendaire { border-color: var(--gold); background: var(--gold-soft); }
 .tile.locked { border-style: dashed; background: transparent; border-color: var(--line); }
-.tile .seal { font-size: 2rem; }
+.tile .seal { font-size: 1.7rem; }
 .tile .q { font-family: var(--han); font-size: 2.4rem; font-weight: 700; color: var(--muted); line-height: 1.1; }
 .tile .name { font-weight: 600; line-height: 1.25; }
 .tile .grow { flex: 1; }
+
+.tile-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; display: block; max-width: 100%; background: var(--surface-2); }
+.fig { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.fig img { width: 100%; max-height: 260px; object-fit: cover; border-radius: 12px; display: block; background: var(--surface-2); }
+.credit { font-size: .75rem; color: var(--muted); }
+.credit a { color: var(--accent); }
 
 /* Feuille de détail */
 .sheet { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-end; justify-content: center; background: rgba(8, 14, 13, .55); }
@@ -165,7 +171,8 @@ details.panel summary { cursor: pointer; font-weight: 600; min-height: 32px; dis
 
 .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
 .tabs button { background: transparent; border: 0; border-radius: 10px; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--muted); font-size: .8rem; font-weight: 600; }
-.tabs button .han { font-size: 1.3rem; line-height: 1; }
+.tabs button svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tabs button svg .fill { fill: currentColor; stroke: none; }
 .tabs button[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
 
 @media (prefers-reduced-motion: reduce) { .stamp { animation: none; } .btn:active { transform: none; } }
@@ -180,9 +187,9 @@ details.panel summary { cursor: pointer; font-weight: 600; min-height: 32px; dis
 </div>
 
 <nav class="tabs" aria-label="Navigation">
-  <button type="button" data-tab="jouer"><span class="han" aria-hidden="true">學</span>Jouer</button>
-  <button type="button" data-tab="collection"><span class="han" aria-hidden="true">集</span>Collection</button>
-  <button type="button" data-tab="reglages"><span class="han" aria-hidden="true">設</span>Réglages</button>
+  <button type="button" data-tab="jouer"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z" class="fill"/></svg>Jouer</button>
+  <button type="button" data-tab="collection"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Collection</button>
+  <button type="button" data-tab="reglages"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h8.8M17.2 7H20M4 12h2.8M11.2 12H20M4 17h10.8M19.2 17H20"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="12" r="2.2"/><circle cx="17" cy="17" r="2.2"/></svg>Réglages</button>
 </nav>
 
 <div class="sheet" id="sheet" hidden>
@@ -265,6 +272,9 @@ details.panel summary { cursor: pointer; font-weight: 600; min-height: 32px; dis
     locked.sort(function (a, b) { var pa = cardProg(a), pb = cardProg(b); return (pb.done / pb.total) - (pa.done / pa.total) || pa.total - pb.total; });
     return locked[0] || null;
   }
+  function commonsName(c) { return c.image_file ? encodeURIComponent(c.image_file) : ''; }
+  function imgURL(c, w) { return c.image_file ? 'https://commons.wikimedia.org/wiki/Special:FilePath/' + commonsName(c) + '?width=' + w : ''; }
+  function imgPage(c) { return c.image_file ? 'https://commons.wikimedia.org/wiki/File:' + commonsName(c) : ''; }
   function cardById(id) { return CARDS.cards.filter(function (c) { return c.id === id; })[0]; }
   function albumName(id) { var a = CARDS.albums.filter(function (x) { return x.id === id; })[0]; return a ? a.name_fr : id; }
 
@@ -481,7 +491,7 @@ details.panel summary { cursor: pointer; font-weight: 600; min-height: 32px; dis
 
   function tileHTML(c) {
     var un = !!store.unlocked[c.id], r = RAR[c.rarity], p = cardProg(c);
-    if (un) return '<button type="button" class="tile r-' + r + '" data-action="card" data-id="' + c.id + '"><span class="seal r-' + r + '">' + esc(c.name_hanzi_trad) + '</span><span class="name">' + esc(c.name_fr) + '</span><span class="small muted py">' + esc(c.pinyin) + '</span><span class="grow"></span><span class="badge r-' + r + '">' + esc(c.rarity) + '</span></button>';
+    if (un) return '<button type="button" class="tile r-' + r + '" data-action="card" data-id="' + c.id + '">' + (c.image_file ? '<img class="tile-img" src="' + esc(imgURL(c, 400)) + '" alt="" loading="lazy">' : '') + '<span class="seal r-' + r + '">' + esc(c.name_hanzi_trad) + '</span><span class="name">' + esc(c.name_fr) + '</span><span class="small muted py">' + esc(c.pinyin) + '</span><span class="grow"></span><span class="badge r-' + r + '">' + esc(c.rarity) + '</span></button>';
     return '<button type="button" class="tile locked" data-action="card" data-id="' + c.id + '" aria-label="Carte verrouillée, ' + p.done + ' mots sur ' + p.total + '"><span class="q" aria-hidden="true">?</span><span class="name muted">Carte à débloquer</span><span class="grow"></span>' + dots(c) + '<span class="badge r-' + r + '">' + esc(c.rarity) + '</span></button>';
   }
   function viewCollection() {
@@ -528,10 +538,11 @@ details.panel summary { cursor: pointer; font-weight: 600; min-height: 32px; dis
       return '<span class="chip' + (ok ? ' ok' : '') + '"><span class="han">' + esc(w.hanzi_trad) + '</span><span class="small py">' + esc(w.pinyin) + '</span><span class="small muted">' + esc(w.fr) + '</span></span>';
     }).join('');
     var h = '<div class="sheet-head"><div class="stack" style="gap:8px">';
-    if (un) h += '<span class="seal r-' + r + '" style="font-size:3.2rem">' + esc(c.name_hanzi_trad) + '</span><h2>' + esc(c.name_fr) + '</h2><span class="py">' + esc(c.pinyin) + '</span>';
+    if (un) h += '<span class="seal r-' + r + '" style="font-size:3rem">' + esc(c.name_hanzi_trad) + '</span><h2>' + esc(c.name_fr) + '</h2><span class="py">' + esc(c.pinyin) + '</span>';
     else h += '<span class="han" style="font-size:3rem;color:var(--muted)">?</span><h2>Carte à débloquer</h2>';
     h += '<div><span class="badge r-' + r + '">' + esc(c.rarity) + '</span> <span class="small muted">' + esc(albumName(c.album)) + '</span></div></div><button type="button" class="btn small" data-action="closesheet" id="sheetclose">Fermer</button></div>';
     if (un) {
+      if (c.image_file) h += '<figure class="fig"><img src="' + esc(imgURL(c, 640)) + '" alt="' + esc(c.name_fr) + '" loading="lazy"><figcaption class="credit">' + esc(c.image_credit || '') + ' · <a href="' + esc(imgPage(c)) + '" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure>';
       h += '<p>' + esc(c.text_fr) + '</p><div class="phrase"><span class="han">' + esc(c.phrase.hanzi_trad) + '</span><span class="py">' + esc(c.phrase.pinyin) + '</span><span class="small muted">' + esc(c.phrase.fr) + '</span>' +
         (audioOK() ? '<div><button type="button" class="say" data-action="saycard" data-id="' + c.id + '" aria-label="Écouter la phrase">' + ICON_SPEAKER + '</button></div>' : '') + '</div>';
     } else h += '<p class="muted">Maîtrise ces mots pour révéler la carte.</p>';
@@ -593,6 +604,8 @@ details.panel summary { cursor: pointer; font-weight: 600; min-height: 32px; dis
   Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
     b.addEventListener('click', function () { S.quiz = null; S.tab = b.getAttribute('data-tab'); S.confirmReset = false; window.scrollTo(0, 0); render(); });
   });
+  // Image Commons introuvable ou bloquée : on la retire sans casser la mise en page
+  document.addEventListener('error', function (e) { var t = e.target; if (t && t.tagName === 'IMG') t.remove(); }, true);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && S.sheet) closeSheet(); });
 
   render();
